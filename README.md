@@ -118,6 +118,27 @@ OP37, this would create a positive feedback loop and generate a saturated oscill
 Using a Star Ground prevents this problem from occurring. Similar design decisions
 were applied to all voltage supplies, with direct connections from the source.
 
+Design Implementation
+The main task of the embedded module was to accurately sample the incoming
+analog signal and perform the necessary calculations to reveal the velocity and spin
+rate of a pitch. As mentioned the hardware used to accomplish this was a Teensy 4.1.
+At each hardware and software iteration, rigorous testing was performed to evaluate if
+that design was suitable for our purposes.
+
+<img width="244" height="292" alt="image" src="https://github.com/user-attachments/assets/7af31e7f-614b-44c5-b230-d2b79dfe1dac" />
+
+The FFT was performed with the arduinoFFT library which provided a structure for
+sampling the signal and finding the major peak. Other libraries were tested for this
+purpose but did not provide the granularity of sampling required for the purposes
+described. It was then possible to perform the doppler shift calculations, which
+included parsing the stored samples for the necessary spectral lines to calculate the spin rate. With this process in place to run the calculations when a signal was
+received on an analog pin, it was necessary to evaluate the noise in the environment
+and include thresholds to limit detections to the area of concern, minimize noise, and
+control what was transmitted to the bluetooth module.
+The final step in the embedded module was to transmit the velocity and spin rate
+calculations to the bluetooth module for classification and display in the application.
+This was accomplished using the Arduino hardware serial functions.
+
 Classification Module:
 
 Pitch classification was determined using information sent from the Bluetooth module including spin rate and velocity and a Machine Learning module that is pre trained using previous data collected from the MLB season will classify it. The classification module has two options for classifying, including a two pitch classification that does Fastball vs Offspeed and a seven pitch classification that classifies a 4-Seam-Fastball, Cutter, Sinker,Slider, Splitter, Changeup, and Curveball. The ML model used for training was a linear-kernel Support Vector Machine classifier in created in Python. Key features from this model were then extracted to be used for making predictions on the backend in C#. Finally, I trained separate SVM models for different age groups using a separate dataset that included information on spin rate and velocity for different pitches for age groups from 10 all the way to the pro level. 	
