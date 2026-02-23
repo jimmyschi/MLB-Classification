@@ -176,3 +176,32 @@ Experience based Seven Pitch Classification works similar to the experience base
 Classification on Backend:
 
 The SVMs were pre trained in Python due to accessibility to SVM libraries, ease of use, and familiarity. The weights and bias features were then extracted from each of the pretrained SVMs and prediction functions were created in C# so the classification can be done without any processing or memory limitations. This also made it very easy to receive information like throwing arm and experience level selected from the User Interface and information like velocity and spin rate because they were already being sent to the backend via the Bluetooth module. The classification on the backend performed exactly as the classification did in Python when testing 100 random sample pitches to confirm the new prediction functions.  
+
+Backend Hardware:
+
+After much research on different demos other engineers had done
+online, the conclusion we came to was to use the HC-05 Bluetooth Module because of
+the great quantity documentation for it. This specific Bluetooth module connects to the
+serial ports, both TX and RX, of the microcontroller used, and transmits the data
+output from those ports via Bluetooth. This also allowed us to use an MCU with much
+more memory, rather than the Arduino Nano 33 BLE from the original design.
+
+Backend Software:
+
+In the backend of the app, a custom BluetoothHandler class was made to handle the
+process of requesting the correct permissions to allow Bluetooth processes to
+complete, searching for the correct device, as well as reading messages from the
+HC-05.
+MVVM (Model-View-Viewmodel) architecture was used to efficiently connect the
+back-end code, including as classes for pitches, pitchers, Bluetooth, and pitch
+identification, to the UI elements of the app.
+5.1.4.1.6 UI Design
+Much of the UI was completed with respect to the conceptual design, with the same
+features as expected, with some being in different areas or pages in the application.
+The final UI design looks as follows:
+
+<img width="248" height="537" alt="image" src="https://github.com/user-attachments/assets/2409c286-3cdd-4261-a181-86446edd6817" />
+
+with data being collected in the graphs for a specific pitcher, and the most recent pitch
+data being displayed in large text. The user also has the ability to add a new pitcher to
+start adding pitches to their pitch list and classify their pitches.
